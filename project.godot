@@ -30,6 +30,11 @@ _global_script_classes=[ {
 "path": "res://addons/godot-git-plugin/git_api.gdns"
 }, {
 "base": "Reference",
+"class": "IOFunction",
+"language": "GDScript",
+"path": "res://Util/IOFunction.gd"
+}, {
+"base": "Reference",
 "class": "NandFunction",
 "language": "GDScript",
 "path": "res://Util/NandFunction.gd"
@@ -49,6 +54,7 @@ _global_script_class_icons={
 "FunctionInput": "",
 "FunctionOutput": "",
 "GitAPI": "",
+"IOFunction": "",
 "NandFunction": "",
 "NodeInput": "",
 "NodeOutput": ""

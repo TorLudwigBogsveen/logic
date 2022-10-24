@@ -10,7 +10,7 @@ var nodes = []
 
 var test_values = {}
 
-var node = load("res://NodeParts/NodeBase.tscn")
+var node_base = load("res://NodeParts/NodeBase.tscn")
 var input_node_scene = load("res://NodeParts/NodeInput.tscn")
 var output_node_scene = load("res://NodeParts/NodeOutput.tscn")
 
@@ -101,8 +101,14 @@ func id():
 	return 0
 	
 func save_custom(node_name):
+	var dir = Directory.new()
+	dir.open("user://")
+	dir.make_dir("nodes")
+	
 	var save_game = File.new()
-	save_game.open("user://nodes/"+node_name+".save", File.WRITE)
+	var error = save_game.open("user://nodes/"+node_name+".save", File.WRITE)
+	if error:
+		push_error("ERORR OPENING FILE : " + String(error))
 	
 	var node_inputs = []
 	for input in inputs:
@@ -129,7 +135,7 @@ func save_custom(node_name):
 	save_game.close()
 	
 func create(custom_function):
-	selected_node = node.instance()
+	selected_node = node_base.instance()
 	selected_node.id = nodes.size()+1
 	selected_node.set_name(custom_function.name).set_function(custom_function)
 	nodes.push_back(selected_node)

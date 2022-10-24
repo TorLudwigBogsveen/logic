@@ -41,20 +41,20 @@ func set_name(name):
 	get_child(1).text = name
 	return self
 
-func set_function(function):
-	self.function = function
-	var inputs = []
-	inputs.resize(function.outputs.size())
-	set_inputs(inputs)
-	var outputs = []
-	outputs.resize(function.inputs.size())
-	set_outputs(outputs)
+func set_function(new_function):
+	function = new_function
+	var new_inputs = []
+	new_inputs.resize(function.inputs.size())
+	set_inputs(new_inputs)
+	var new_outputs = []
+	new_outputs.resize(function.outputs.size())
+	set_outputs(new_outputs)
 	return self
 	
-func set_inputs(input_nodes):
-	self.input_nodes = input_nodes
+func set_inputs(new_input_nodes):
+	input_nodes = new_input_nodes
 	inputs = []
-	for i in self.input_nodes.size():
+	for i in input_nodes.size():
 		var input_node_instance = input_node_scene.instance()
 		input_node_instance.position.y = (128 / (self.input_nodes.size() + 1))*(i+1)
 		input_node_instance.position.x = -10;
@@ -63,12 +63,12 @@ func set_inputs(input_nodes):
 		inputs.push_back(input_node_instance)
 	return self
 		
-func set_outputs(output_nodes):
-	self.output_nodes = output_nodes
+func set_outputs(new_output_nodes):
+	output_nodes = new_output_nodes
 	outputs = []
-	for i in self.output_nodes.size():
+	for i in output_nodes.size():
 		var output_node_instance = output_node_scene.instance()
-		output_node_instance.position.y = (128 / (self.output_nodes.size() + 1))*(i+1)
+		output_node_instance.position.y = (128 / (output_nodes.size() + 1))*(i+1)
 		output_node_instance.position.x = 128+10;
 		output_node_instance.id = 0
 		add_child(output_node_instance)
@@ -87,8 +87,8 @@ func run():
 			input_values.push_back(false)
 	self.function.input_values = input_values
 	self.function.run()
-	var outputs = self.function.get_output_values()
-	values = outputs
+	var output_values = self.function.get_output_values()
+	values = output_values
 	return self
 	
 func clicked_input(input, btn):

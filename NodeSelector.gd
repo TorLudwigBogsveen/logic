@@ -35,32 +35,31 @@ func add_custom(name):
 func button_pressed(btn):
 	if btn.text == "NAND":
 		var custom_function = CustomFunction.new()
-		custom_function.name = "NAND"
-		var nand = NandFunction.new()
-		custom_function.nodes.push_back(nand)
-		
-		var o1 = FunctionOutput.new()
-		o1.parent = custom_function
-		custom_function.outputs.push_back(o1)
-		var o2 = FunctionOutput.new()
-		o2.parent = custom_function
-		custom_function.outputs.push_back(o2)
-		
-		var i1 = FunctionInput.new()
-		i1.connected = o1
-		nand.inputs.push_back(i1)
-		var i2 = FunctionInput.new()
-		i2.connected = o2
-		nand.inputs.push_back(i2)
-		
-		var o3 = FunctionOutput.new()
-		o3.parent = nand
-		nand.outputs.push_back(o3)
-		
-		var i3 = FunctionInput.new()
-		i3.connected = o3
-		custom_function.inputs.push_back(i3)
-
+		custom_function.from_json(
+			to_json({
+				"name": "NAND",
+				"inputs": [
+					{"connections": [{"id": 0, "parent": 1}], "id": 0, "parent": 0},
+					{"connections": [{"id": 1, "parent": 1}], "id": 1, "parent": 0}
+				],
+				"outputs": [
+					{"connection": {"id": 0, "parent": 1},  "id": 0, "parent": 0}
+				],
+				"nodes": [
+					{
+						"function": "NAND",
+						"id": 1,
+						"inputs": [
+							{"connection": {"id": 0, "parent": 0}, "id": 0, "parent": 1},
+							{"connection": {"id": 1, "parent": 0}, "id": 1, "parent": 1}
+						],
+						"outputs": [
+							{"connections": [{"id": 0, "parent": 0}], "id": 0, "parent": 1}
+						]
+					}
+				]
+			})
+		)
 		node_list.create(custom_function)
 	else:
 		var file = File.new()
