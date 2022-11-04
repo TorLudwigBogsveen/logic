@@ -12,6 +12,7 @@ var input_nodes = null
 var output_nodes = null
 
 var id = -1
+var old_values = []
 var values = []
 
 func _ready():
@@ -28,9 +29,9 @@ func _input(event):
 		
 func get_value(io):
 	if io is NodeOutput:
-		return values[outputs.find(io)]
+		return old_values[outputs.find(io)]
 	elif io is NodeInput:
-		return values[inputs.find(io)]
+		return old_values[inputs.find(io)]
 	else:
 		assert(false)
 
@@ -57,7 +58,7 @@ func set_inputs(new_input_nodes):
 	for i in input_nodes.size():
 		var input_node_instance = input_node_scene.instance()
 		input_node_instance.position.y = (128 / (self.input_nodes.size() + 1))*(i+1)
-		input_node_instance.position.x = -10;
+		input_node_instance.position.x = -10
 		input_node_instance.id = i
 		add_child(input_node_instance)
 		inputs.push_back(input_node_instance)
@@ -69,13 +70,19 @@ func set_outputs(new_output_nodes):
 	for i in output_nodes.size():
 		var output_node_instance = output_node_scene.instance()
 		output_node_instance.position.y = (128 / (output_nodes.size() + 1))*(i+1)
-		output_node_instance.position.x = 128+10;
+		output_node_instance.position.x = 128+10
 		output_node_instance.id = 0
 		add_child(output_node_instance)
-		outputs = [output_node_instance]
+		outputs.push_back(output_node_instance)
 	values.resize(outputs.size())
 	values.fill(false)
+	old_values.resize(outputs.size())
+	old_values.fill(false)
 	return self
+	
+func reset():
+	old_values = values
+	self.function.reset()
 
 func run():
 	var input_values = []

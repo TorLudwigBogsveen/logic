@@ -59,6 +59,10 @@ func from_json(json_data):
 	for output in json.outputs:
 		output_node.inputs[output.id].connected = nodes[output.connection.parent-1].outputs[output.connection.id]
 
+func reset():
+	for node in nodes:
+		node.reset()
+
 func run():
 	for node in nodes:
 		node.run()

@@ -14,15 +14,23 @@ var node_base = load("res://NodeParts/NodeBase.tscn")
 var input_node_scene = load("res://NodeParts/NodeInput.tscn")
 var output_node_scene = load("res://NodeParts/NodeOutput.tscn")
 
+var timer = 0
+
 func _draw():
 	if selected_io != null:
 		draw_line(get_viewport().get_mouse_position(), selected_io.global_position, Color.white, 5.0)
 
 
-func _process(_delta):
-	for child in get_children():
-		if !(child is NodeInput || child is NodeOutput):
-			child.run()
+func _process(delta):
+	timer += delta
+	if timer > 0.0:
+		timer -= 0.0
+		for child in get_children():
+			if !(child is NodeInput || child is NodeOutput):
+				child.run()
+		for child in get_children():
+			if !(child is NodeInput || child is NodeOutput):
+				child.reset()
 	if selected_node != null:
 		var pos = get_viewport().get_mouse_position()
 		selected_node.set_position(Vector2(pos.x-64, pos.y-64))
@@ -31,7 +39,8 @@ func _process(_delta):
 func set_n_inputs(n_inputs):
 	if n_inputs >= 0:
 		for input in inputs:
-			remove_child(input)
+			if get_children().has(input):
+				remove_child(input)
 		inputs = []
 		for i in range(n_inputs):
 			var input_node_instance = output_node_scene.instance()
@@ -44,7 +53,8 @@ func set_n_inputs(n_inputs):
 func set_n_outputs(n_outputs):
 	if n_outputs >= 0:
 		for output in outputs:
-			remove_child(output)
+			if get_children().has(output):
+				remove_child(output)
 		outputs = []
 		for i in range(n_outputs):
 			var output_node_instance = input_node_scene.instance()
