@@ -7,10 +7,17 @@ var radius = 10
 var connection = null
 var id = -1
 
+var curve = Curve2D.new()
+
 func _ready():
 	pass 
 	
 func _process(_delta):
+	if connection != null:
+		var diff = connection.global_position-global_position
+		curve.clear_points()
+		curve.add_point(diff, Vector2.ZERO, -Vector2(diff.x, 0.0) * 0.7);
+		curve.add_point(Vector2.ZERO, Vector2(diff.x, 0.0) * 0.7, Vector2.ZERO);
 	update()
 
 func _draw():
@@ -22,7 +29,8 @@ func _draw():
 		
 	draw_circle(Vector2(0, 0), radius, color)
 	if connection != null:
-		draw_line(Vector2(0, 0), connection.global_position-global_position, color, 5.0)
+		draw_polyline(curve.tessellate(10, 1), color, 5.0)
+		#draw_line(Vector2(0, 0), connection.global_position-global_position, color, 5.0)
 
 func _input(event):
 	if event is InputEventMouse:

@@ -10,7 +10,6 @@ var nodes = []
 
 var test_values = {}
 
-var node_base = load("res://NodeParts/NodeBase.tscn")
 var input_node_scene = load("res://NodeParts/NodeInput.tscn")
 var output_node_scene = load("res://NodeParts/NodeOutput.tscn")
 
@@ -144,10 +143,9 @@ func save_custom(node_name):
 	save_game.store_line(to_json(save_dict))
 	save_game.close()
 	
-func create(custom_function):
-	selected_node = node_base.instance()
-	selected_node.id = nodes.size()+1
-	selected_node.set_name(custom_function.name).set_function(custom_function)
+func create(node):
+	selected_node = node
+	selected_node.set_id(nodes.size()+1)
 	nodes.push_back(selected_node)
 	add_child(selected_node)
 	pass

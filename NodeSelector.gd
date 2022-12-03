@@ -2,6 +2,11 @@ extends VBoxContainer
 
 var node_list = null;
 
+var circuit_scene = load("res://Circuits/FunctionCircuit.tscn")
+var ssd_scene = load("res://Circuits/SevenSegmentDisplay.tscn")
+var btn_scene = load("res://Circuits/Button.tscn")
+var key_scene = load("res://Circuits/Key.tscn")
+
 var CustomFunction = load("res://Util/CustomFunction.gd")
 var NandFunction = load("res://Util/NandFunction.gd")
 var FunctionInput = load("res://Util/FunctionInput.gd")
@@ -10,6 +15,9 @@ var FunctionOutput = load("res://Util/FunctionOutput.gd")
 func _ready():
 	node_list = get_node(NodePath("/root/Node2D/NodeList"))
 	add_custom("NAND")
+	add_custom("SSD")
+	add_custom("BTN")
+	add_custom("KEY")
 	
 	var dir = Directory.new()
 	if dir.open("user://nodes/") == OK:
@@ -29,6 +37,7 @@ func add_custom(name):
 	var btn = Button.new()
 	btn.text = name
 	btn.connect("pressed", self, "button_pressed", [btn])
+	btn.theme = load("World.tres")
 	add_child(btn)
 
 
@@ -60,13 +69,27 @@ func button_pressed(btn):
 				]
 			})
 		)
-		node_list.create(custom_function)
+		var node = circuit_scene.instance()
+		node.set_name(custom_function.name).set_function(custom_function)
+		node_list.create(node)
+	elif btn.text == "SSD":
+		var seven_segment_display = ssd_scene.instance()
+		node_list.create(seven_segment_display)
+	elif btn.text == "BTN":
+		var button = btn_scene.instance()
+		node_list.create(button)
+	elif btn.text == "KEY":
+		var key = key_scene.instance()
+		node_list.create(key)
 	else:
 		var file = File.new()
 		file.open("user://nodes/" + btn.text + ".save", File.READ)
 		var content = file.get_as_text()
 		file.close()
+		print(content)
 		var custom_function = CustomFunction.new()
 		custom_function.from_json(content)
-		node_list.create(custom_function)
+		var node = circuit_scene.instance()
+		node.set_name(custom_function.name).set_function(custom_function)
+		node_list.create(node)
 	pass

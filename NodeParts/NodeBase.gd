@@ -6,8 +6,6 @@ var output_node_scene = load("res://NodeParts/NodeOutput.tscn")
 var inputs = null
 var outputs = null
 
-var function = null
-
 var input_nodes = null
 var output_nodes = null
 
@@ -23,9 +21,9 @@ func _input(event):
 		var mouse_pos = get_viewport().get_mouse_position()
 		if is_mouse_inside(mouse_pos):
 			if event.is_action_pressed("mouse_left"):
-				get_parent().selected_node = self
+				get_parent().select_node()
 			elif event.is_action_released("mouse_left"):
-				get_parent().selected_node = null
+				get_parent().unselect_node()
 		
 func get_value(io):
 	if io is NodeOutput:
@@ -37,20 +35,6 @@ func get_value(io):
 
 func is_mouse_inside(mouse_pos):
 	return mouse_pos.x >= global_position.x && mouse_pos.x < global_position.x + 128 && mouse_pos.y >= global_position.y && mouse_pos.y < global_position.y + 128
-
-func set_name(name):
-	get_child(1).text = name
-	return self
-
-func set_function(new_function):
-	function = new_function
-	var new_inputs = []
-	new_inputs.resize(function.inputs.size())
-	set_inputs(new_inputs)
-	var new_outputs = []
-	new_outputs.resize(function.outputs.size())
-	set_outputs(new_outputs)
-	return self
 	
 func set_inputs(new_input_nodes):
 	input_nodes = new_input_nodes
@@ -82,21 +66,6 @@ func set_outputs(new_output_nodes):
 	
 func reset():
 	old_values = values
-	self.function.reset()
-
-func run():
-	var input_values = []
-	for i in range(inputs.size()):
-		var c = inputs[i].connection
-		if c != null:
-			input_values.push_back(c.get_value())
-		else:
-			input_values.push_back(false)
-	self.function.input_values = input_values
-	self.function.run()
-	var output_values = self.function.get_output_values()
-	values = output_values
-	return self
 	
 func clicked_input(input, btn):
 	get_parent().clicked_input(input, btn)
@@ -118,7 +87,6 @@ func save():
 	
 	var save_dict = {
 		"id": id(),
-		"function": function.name,
 		"inputs": node_inputs,
 		"outputs": node_outputs
 	}
