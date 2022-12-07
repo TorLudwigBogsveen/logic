@@ -14,6 +14,7 @@ var input_node_scene = load("res://NodeParts/NodeInput.tscn")
 var output_node_scene = load("res://NodeParts/NodeOutput.tscn")
 
 var timer = 0
+var t = 0
 
 func _draw():
 	if selected_io != null:
@@ -22,14 +23,16 @@ func _draw():
 
 func _process(delta):
 	timer += delta
-	if timer > 0.0:
-		timer -= 0.0
-		for child in get_children():
-			if !(child is NodeInput || child is NodeOutput):
-				child.run()
-		for child in get_children():
-			if !(child is NodeInput || child is NodeOutput):
-				child.reset()
+	t += 1
+	if timer >= 1.0:
+		timer -= 1.0
+		print("TICK: " + String(t))
+		t = 0
+	for _i in range(20):
+		for node in nodes:
+			node.run()
+		for node in nodes:
+			node.reset()
 	if selected_node != null:
 		var pos = get_viewport().get_mouse_position()
 		selected_node.set_position(Vector2(pos.x-64, pos.y-64))

@@ -18,23 +18,7 @@ func from_json(json_data):
 	var json = JSON.parse(json_data).result
 	name = json.name
 	
-	nodes.resize(json.nodes.size())
-	for node in json.nodes:
-		if node.function == "NAND":
-			var nand = NandFunction.new()
-			nand.set_inputs([FunctionInput.new(), FunctionInput.new()])
-			var output = FunctionOutput.new()
-			output.parent = nand
-			nand.set_outputs([output])
-			nodes[node.id-1] = nand
-		else:
-			var file = File.new()
-			file.open("user://nodes/" + node.function + ".save", File.READ)
-			var content = file.get_as_text()
-			file.close()
-			var n = get_script().new()
-			n.from_json(content)
-			nodes[node.id-1] = n
+	load_nodes(json)
 	
 	input_values.resize(json.inputs.size())
 	input_values.fill(false)
@@ -58,7 +42,26 @@ func from_json(json_data):
 				
 	for output in json.outputs:
 		output_node.inputs[output.id].connected = nodes[output.connection.parent-1].outputs[output.connection.id]
-
+		
+func load_nodes(json):
+	nodes.resize(json.nodes.size())
+	for node in json.nodes:
+		if node.function == "NAND":
+			var nand = NandFunction.new()
+			nand.set_inputs([FunctionInput.new(), FunctionInput.new()])
+			var output = FunctionOutput.new()
+			output.parent = nand
+			nand.set_outputs([output])
+			nodes[node.id-1] = nand
+		else:
+			var file = File.new()
+			file.open("user://nodes/" + node.function + ".save", File.READ)
+			var content = file.get_as_text()
+			file.close()
+			var n = get_script().new()
+			n.from_json(content)
+			nodes[node.id-1] = n
+	
 func reset():
 	for node in nodes:
 		node.reset()

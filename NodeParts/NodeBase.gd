@@ -3,11 +3,11 @@ extends Node2D
 var input_node_scene = load("res://NodeParts/NodeInput.tscn")
 var output_node_scene = load("res://NodeParts/NodeOutput.tscn")
 
-var inputs = null
-var outputs = null
+var inputs = []
+var outputs = []
 
-var input_nodes = null
-var output_nodes = null
+var input_nodes = []
+var output_nodes = []
 
 var id = -1
 var old_values = []
@@ -55,7 +55,7 @@ func set_outputs(new_output_nodes):
 		var output_node_instance = output_node_scene.instance()
 		output_node_instance.position.y = (128 / (output_nodes.size() + 1))*(i+1)
 		output_node_instance.position.x = 128+10
-		output_node_instance.id = 0
+		output_node_instance.id = i
 		add_child(output_node_instance)
 		outputs.push_back(output_node_instance)
 	values.resize(outputs.size())
@@ -65,7 +65,7 @@ func set_outputs(new_output_nodes):
 	return self
 	
 func reset():
-	old_values = values
+	old_values = values.duplicate()
 	
 func clicked_input(input, btn):
 	get_parent().clicked_input(input, btn)
@@ -88,7 +88,9 @@ func save():
 	var save_dict = {
 		"id": id(),
 		"inputs": node_inputs,
-		"outputs": node_outputs
+		"outputs": node_outputs,
+		"position_x": global_position.x,
+		"position_y": global_position.y
 	}
 	
 	return save_dict

@@ -37,4 +37,5 @@ func run():
 	self.function.run()
 	var output_values = self.function.get_output_values()
 	get_base().values = output_values
+	
 	return self

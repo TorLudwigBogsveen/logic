@@ -6,6 +6,7 @@ var circuit_scene = load("res://Circuits/FunctionCircuit.tscn")
 var ssd_scene = load("res://Circuits/SevenSegmentDisplay.tscn")
 var btn_scene = load("res://Circuits/Button.tscn")
 var key_scene = load("res://Circuits/Key.tscn")
+var clock_scene = load("res://Circuits/Clock.tscn")
 
 var CustomFunction = load("res://Util/CustomFunction.gd")
 var NandFunction = load("res://Util/NandFunction.gd")
@@ -18,6 +19,7 @@ func _ready():
 	add_custom("SSD")
 	add_custom("BTN")
 	add_custom("KEY")
+	add_custom("CLOCK")
 	
 	var dir = Directory.new()
 	if dir.open("user://nodes/") == OK:
@@ -81,14 +83,18 @@ func button_pressed(btn):
 	elif btn.text == "KEY":
 		var key = key_scene.instance()
 		node_list.create(key)
+	elif btn.text == "CLOCK":
+		var clock = clock_scene.instance()
+		node_list.create(clock)
 	else:
 		var file = File.new()
 		file.open("user://nodes/" + btn.text + ".save", File.READ)
 		var content = file.get_as_text()
 		file.close()
-		print(content)
+
 		var custom_function = CustomFunction.new()
 		custom_function.from_json(content)
+	
 		var node = circuit_scene.instance()
 		node.set_name(custom_function.name).set_function(custom_function)
 		node_list.create(node)

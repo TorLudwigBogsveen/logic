@@ -5,63 +5,61 @@
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 2 )
+__meta__ = {
+"_edit_horizontal_guides_": [ -14.0 ]
+}
 
 [node name="NodeBase" parent="." instance=ExtResource( 1 )]
-scale = Vector2( 1.00517, 1 )
+position = Vector2( 0, -0.371628 )
 
-[node name="ColorRect" type="ColorRect" parent="."]
-margin_left = 25.0
-margin_top = 3.0
-margin_right = 91.0
-margin_bottom = 21.0
-color = Color( 0, 0, 0, 1 )
+[node name="TB" type="Polygon2D" parent="."]
+position = Vector2( 20, 4.5 )
+scale = Vector2( 0.7, 0.7 )
+antialiased = true
+polygon = PoolVector2Array( 0, 0, 100, 0, 110, 10, 100, 20, 0, 20, -10, 10 )
 
-[node name="ColorRect4" type="ColorRect" parent="."]
-margin_left = 4.0
-margin_top = 12.0
-margin_right = 20.0
-margin_bottom = 60.0
-color = Color( 0, 0, 0, 1 )
+[node name="RL4" type="Polygon2D" parent="."]
+position = Vector2( 105, 20 )
+rotation = 1.5708
+scale = Vector2( 0.7, 0.7 )
+antialiased = true
+polygon = PoolVector2Array( 0, 0, 50, 0, 60, 10, 50, 20, 0, 20, -10, 10 )
 
-[node name="ColorRect6" type="ColorRect" parent="."]
-margin_left = 94.0
-margin_top = 11.0
-margin_right = 110.0
-margin_bottom = 59.0
-color = Color( 0, 0, 0, 1 )
+[node name="RL3" type="Polygon2D" parent="."]
+position = Vector2( 19, 20 )
+rotation = 1.5708
+scale = Vector2( 0.7, 0.7 )
+antialiased = true
+polygon = PoolVector2Array( 0, 0, 50, 0, 60, 10, 50, 20, 0, 20, -10, 10 )
 
-[node name="ColorRect3" type="ColorRect" parent="."]
-margin_left = 25.0
-margin_top = 50.0
-margin_right = 91.0
-margin_bottom = 68.0
-color = Color( 0, 0, 0, 1 )
+[node name="TB1" type="Polygon2D" parent="."]
+position = Vector2( 20, 56.5 )
+scale = Vector2( 0.7, 0.7 )
+antialiased = true
+polygon = PoolVector2Array( 0, 0, 100, 0, 110, 10, 100, 20, 0, 20, -10, 10 )
 
-[node name="ColorRect5" type="ColorRect" parent="."]
-margin_left = 4.0
-margin_top = 66.0
-margin_right = 20.0
-margin_bottom = 114.0
-color = Color( 0, 0, 0, 1 )
+[node name="RL2" type="Polygon2D" parent="."]
+position = Vector2( 19, 72 )
+rotation = 1.5708
+scale = Vector2( 0.7, 0.7 )
+antialiased = true
+polygon = PoolVector2Array( 0, 0, 50, 0, 60, 10, 50, 20, 0, 20, -10, 10 )
 
-[node name="ColorRect7" type="ColorRect" parent="."]
-margin_left = 95.0
-margin_top = 66.0
-margin_right = 111.0
-margin_bottom = 114.0
-color = Color( 0, 0, 0, 1 )
+[node name="RL" type="Polygon2D" parent="."]
+position = Vector2( 105, 72 )
+rotation = 1.5708
+scale = Vector2( 0.7, 0.7 )
+antialiased = true
+polygon = PoolVector2Array( 0, 0, 50, 0, 60, 10, 50, 20, 0, 20, -10, 10 )
 
-[node name="ColorRect2" type="ColorRect" parent="."]
-margin_left = 26.0
-margin_top = 102.0
-margin_right = 92.0
-margin_bottom = 120.0
-rect_pivot_offset = Vector2( 27, -44 )
-color = Color( 0, 0, 0, 1 )
+[node name="TB2" type="Polygon2D" parent="."]
+position = Vector2( 20, 108.5 )
+scale = Vector2( 0.7, 0.7 )
+antialiased = true
+polygon = PoolVector2Array( 0, 0, 100, 0, 110, 10, 100, 20, 0, 20, -10, 10 )
 
-[node name="ColorRect8" type="ColorRect" parent="."]
-margin_left = 112.0
-margin_top = 112.0
-margin_right = 128.0
-margin_bottom = 127.0
-color = Color( 0, 0, 0, 1 )
+[node name="DOT" type="Polygon2D" parent="."]
+position = Vector2( 106.08, 111.782 )
+scale = Vector2( 1.58863, 1.72527 )
+antialiased = true
+polygon = PoolVector2Array( 0, 0, 0, 5, 4.997, 8, 10, 5, 10, 0, 5, -2, 0, 0, 0, 0, 0, 0 )

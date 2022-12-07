@@ -30,6 +30,7 @@ func set_n_outputs(n_outputs):
 func get_value(output):
 	assert(outputs.has(output))
 	var input = inputs[outputs.find(output)]
+
 	if input.connected != null:
 		return input.get_value()
 	else:
