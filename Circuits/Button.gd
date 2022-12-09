@@ -16,6 +16,3 @@ func _input(event):
 					get_child(1).text = "ON"
 				else:
 					get_child(1).text = "OFF"
-
-func is_mouse_inside(mouse_pos):
-	return mouse_pos.x >= global_position.x && mouse_pos.x < global_position.x + 128 && mouse_pos.y >= global_position.y && mouse_pos.y < global_position.y + 128

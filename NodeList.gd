@@ -28,14 +28,15 @@ func _process(delta):
 		timer -= 1.0
 		print("TICK: " + String(t))
 		t = 0
-	for _i in range(20):
+	for _i in range(1):
 		for node in nodes:
 			node.run()
 		for node in nodes:
 			node.reset()
 	if selected_node != null:
 		var pos = get_viewport().get_mouse_position()
-		selected_node.set_position(Vector2(pos.x-64, pos.y-64))
+		var size = selected_node.get_base().get_size()
+		selected_node.set_position(Vector2(pos.x-size.x/2, pos.y-size.y/2))
 	update()
 
 func set_n_inputs(n_inputs):

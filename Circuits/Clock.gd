@@ -30,7 +30,3 @@ func run():
 	ticks += 1
 	if ticks % int(tick_speed) == 0:
 		get_base().values = [!get_base().values[0]]
-
-func is_mouse_inside(mouse_pos):
-	return mouse_pos.x >= global_position.x && mouse_pos.x < global_position.x + 128 && mouse_pos.y >= global_position.y && mouse_pos.y < global_position.y + 128
-	

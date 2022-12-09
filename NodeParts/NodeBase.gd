@@ -24,7 +24,13 @@ func _input(event):
 				get_parent().select_node()
 			elif event.is_action_released("mouse_left"):
 				get_parent().unselect_node()
-		
+
+func set_size(size):
+	get_child(0).rect_size = size
+	
+func get_size():
+	return get_child(0).rect_size
+
 func get_value(io):
 	if io is NodeOutput:
 		return old_values[outputs.find(io)]
@@ -34,14 +40,24 @@ func get_value(io):
 		assert(false)
 
 func is_mouse_inside(mouse_pos):
-	return mouse_pos.x >= global_position.x && mouse_pos.x < global_position.x + 128 && mouse_pos.y >= global_position.y && mouse_pos.y < global_position.y + 128
+	return mouse_pos.x >= global_position.x && mouse_pos.x < global_position.x + get_size().x && mouse_pos.y >= global_position.y && mouse_pos.y < global_position.y + get_size().y
 	
+func remove_inputs():
+	for input in inputs:
+		remove_child(input)
+		
+func remove_outputs():
+	for output in outputs:
+		remove_child(output)
+
 func set_inputs(new_input_nodes):
+	remove_inputs()
+	
 	input_nodes = new_input_nodes
 	inputs = []
 	for i in input_nodes.size():
 		var input_node_instance = input_node_scene.instance()
-		input_node_instance.position.y = (128 / (self.input_nodes.size() + 1))*(i+1)
+		input_node_instance.position.y = (get_size().y / (self.input_nodes.size() + 1))*(i+1)
 		input_node_instance.position.x = -10
 		input_node_instance.id = i
 		add_child(input_node_instance)
@@ -49,12 +65,14 @@ func set_inputs(new_input_nodes):
 	return self
 		
 func set_outputs(new_output_nodes):
+	remove_outputs()
+	
 	output_nodes = new_output_nodes
 	outputs = []
 	for i in output_nodes.size():
 		var output_node_instance = output_node_scene.instance()
-		output_node_instance.position.y = (128 / (output_nodes.size() + 1))*(i+1)
-		output_node_instance.position.x = 128+10
+		output_node_instance.position.y = (get_size().y / (output_nodes.size() + 1))*(i+1)
+		output_node_instance.position.x = get_size().x+10
 		output_node_instance.id = i
 		add_child(output_node_instance)
 		outputs.push_back(output_node_instance)

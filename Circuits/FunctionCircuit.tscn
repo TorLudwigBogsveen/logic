@@ -12,9 +12,9 @@ script = ExtResource( 2 )
 [node name="Label" type="Label" parent="."]
 margin_left = -12.0
 margin_top = 54.0
-margin_right = 372.0
 margin_bottom = 118.0
 rect_scale = Vector2( 0.4, 0.4 )
 custom_fonts/font = ExtResource( 3 )
-text = "[Null]"
-align = 1
+text = "[NULL]"
+
+[connection signal="resized" from="Label" to="." method="_on_Label_resized"]

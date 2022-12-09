@@ -30,3 +30,6 @@ func reset():
 
 func run():
 	pass
+	
+func is_mouse_inside(mouse_pos):
+	return mouse_pos.x >= global_position.x && mouse_pos.x < global_position.x + get_base().get_size().x && mouse_pos.y >= global_position.y && mouse_pos.y < global_position.y + get_base().get_size().y

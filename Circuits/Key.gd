@@ -21,9 +21,6 @@ func _input(event):
 			key = event.scancode
 			get_child(1).text = ""+char(key)	
 		elif event.pressed && event.scancode == key:
-			get_base().values = [!get_base().values[0]]
-
-
-func is_mouse_inside(mouse_pos):
-	return mouse_pos.x >= global_position.x && mouse_pos.x < global_position.x + 128 && mouse_pos.y >= global_position.y && mouse_pos.y < global_position.y + 128
-	
+			get_base().values = [true]
+		elif !event.pressed && event.scancode == key:
+			get_base().values = [false]
