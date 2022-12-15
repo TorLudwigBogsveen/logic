@@ -3,8 +3,7 @@ extends Node2D
 var node_name = null
 
 func _ready():
-	pass 
-
+	pass
 
 func _on_SaveButton_pressed():
 	if node_name != null && node_name != "":

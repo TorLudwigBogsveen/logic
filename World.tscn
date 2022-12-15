@@ -20,7 +20,7 @@ margin_bottom = 40.0
 
 [node name="Panel" type="Panel" parent="Control"]
 margin_right = 112.0
-margin_bottom = 600.0
+margin_bottom = 6000.0
 custom_styles/panel = SubResource( 1 )
 
 [node name="NodeSelector" type="VBoxContainer" parent="Control/Panel"]
@@ -30,7 +30,7 @@ script = ExtResource( 3 )
 
 [node name="Panel" type="Panel" parent="."]
 margin_left = 112.0
-margin_right = 1025.0
+margin_right = 9242.0
 margin_bottom = 26.0
 
 [node name="SaveButton" type="Button" parent="Panel"]

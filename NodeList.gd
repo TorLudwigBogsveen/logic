@@ -16,11 +16,17 @@ var output_node_scene = load("res://NodeParts/NodeOutput.tscn")
 var timer = 0
 var t = 0
 
+func _ready():
+	get_tree().get_root().connect("size_changed", self, "on_resized")
+
 func _draw():
 	if selected_io != null:
 		draw_line(get_viewport().get_mouse_position(), selected_io.global_position, Color.white, 5.0)
 
-
+func on_resized():
+	reposition_inputs()
+	reposition_outputs()
+		
 func _process(delta):
 	timer += delta
 	t += 1
@@ -47,11 +53,10 @@ func set_n_inputs(n_inputs):
 		inputs = []
 		for i in range(n_inputs):
 			var input_node_instance = output_node_scene.instance()
-			input_node_instance.position.y = (600 / (n_inputs + 1))*(i+1)
-			input_node_instance.position.x = 128;
 			input_node_instance.id = i
 			add_child(input_node_instance)
 			inputs.push_back(input_node_instance)
+		reposition_inputs()
 	
 func set_n_outputs(n_outputs):
 	if n_outputs >= 0:
@@ -61,12 +66,25 @@ func set_n_outputs(n_outputs):
 		outputs = []
 		for i in range(n_outputs):
 			var output_node_instance = input_node_scene.instance()
-			output_node_instance.position.y = (600 / (n_outputs + 1))*(i+1)
-			output_node_instance.position.x = 1024-16;
 			output_node_instance.id = i
 			add_child(output_node_instance)
 			outputs.push_back(output_node_instance)
-		
+		reposition_outputs()
+
+func reposition_outputs():
+	var window_size = get_viewport_rect().size;
+	for i in range(outputs.size()):
+		var output = outputs[i]
+		output.position.y = (window_size.y / (outputs.size() + 1))*(i+1)
+		output.position.x = window_size.x-16;
+
+func reposition_inputs():
+	var window_size = get_viewport_rect().size;
+	for i in range(inputs.size()):
+		var input = inputs[i]
+		input.position.y = (window_size.y / (inputs.size() + 1))*(i+1)
+		input.position.x = 128;
+
 func clicked_input(input, btn):
 	if btn == BUTTON_LEFT:
 		if selected_io == null:
