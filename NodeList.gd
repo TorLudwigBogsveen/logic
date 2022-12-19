@@ -113,8 +113,6 @@ func clicked_output(output, btn):
 			test_values[output] = !test_values[output]
 		else:
 			test_values[output] = true
-
-
 	
 func delete():
 	for node in get_children():

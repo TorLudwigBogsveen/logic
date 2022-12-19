@@ -8,10 +8,10 @@ var btn_scene = load("res://Circuits/Button.tscn")
 var key_scene = load("res://Circuits/Key.tscn")
 var clock_scene = load("res://Circuits/Clock.tscn")
 
-var CustomFunction = load("res://Util/CustomFunction.gd")
-var NandFunction = load("res://Util/NandFunction.gd")
-var FunctionInput = load("res://Util/FunctionInput.gd")
-var FunctionOutput = load("res://Util/FunctionOutput.gd")
+var CustomFunction = load("res://Functions/CustomFunction.gd")
+var NandFunction = load("res://Functions/NandFunction.gd")
+var FunctionInput = load("res://Functions/FunctionInput.gd")
+var FunctionOutput = load("res://Functions/FunctionOutput.gd")
 
 func _ready():
 	node_list = get_node(NodePath("/root/Node2D/NodeList"))

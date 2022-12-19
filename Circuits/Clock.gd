@@ -25,7 +25,12 @@ func _input(event):
 		if is_mouse_inside(mouse_pos):
 			if event.is_action_pressed("mouse_right"):
 				selected = true
-
+func save():
+	var s = .save()
+	s["function"] = "CLK"
+	s["tick_speed"] = tick_speed
+	return s
+	
 func run():
 	ticks += 1
 	if ticks % int(tick_speed) == 0:

@@ -50,6 +50,9 @@ func run():
 	
 	return self
 
-
+func _input(event):
+	if function != null:
+		function._input(event)
+	
 func _on_Label_resized():
 	init()

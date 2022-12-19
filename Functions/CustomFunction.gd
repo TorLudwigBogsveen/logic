@@ -1,6 +1,8 @@
 class_name CustomFunction
 
-var NandFunction = load("res://Util/NandFunction.gd")
+var NandFunction = load("res://Functions/NandFunction.gd")
+var KeyFunction = load("res://Functions/KeyFunction.gd")
+var ClockFunction = load("res://Functions/ClockFunction.gd")
 
 var nodes = []
 
@@ -13,6 +15,11 @@ var input_values = []
 
 var input_node = IOFunction.new(self)
 var output_node = IOFunction.new(self)
+
+func _input(event):
+	for node in nodes:
+		if node is KeyFunction:
+			node._input(event)
 
 func from_json(json_data):
 	var json = JSON.parse(json_data).result
@@ -53,6 +60,25 @@ func load_nodes(json):
 			output.parent = nand
 			nand.set_outputs([output])
 			nodes[node.id-1] = nand
+		elif node.function == "KEY":
+			var key = KeyFunction.new()
+			key.set_inputs([FunctionInput.new(), FunctionInput.new()])
+			var output = FunctionOutput.new()
+			output.parent = key
+			key.set_outputs([output])
+			key.key = node.key
+			nodes[node.id-1] = key
+		elif node.function == "CLK":
+			var clock = ClockFunction.new()
+			var output = FunctionOutput.new()
+			output.parent = clock
+			clock.set_outputs([output])
+			clock.tick_speed = node.tick_speed
+			nodes[node.id-1] = clock
+		elif node.function == "SSD":
+			printerr("CUSTOM FUNCTION WITH SEVEN SEGMENT DISPLAY NOT IMPLEMENTED")
+		elif node.function == "BTN":
+			printerr("CUSTOM FUNCTION WITH BUTTON NOT IMPLEMENTED")
 		else:
 			var file = File.new()
 			file.open("user://nodes/" + node.function + ".save", File.READ)

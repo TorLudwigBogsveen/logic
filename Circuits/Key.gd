@@ -5,6 +5,12 @@ var key = null
 
 func _ready():
 	get_base().set_outputs([0])
+	
+func save():
+	var s = .save()
+	s["function"] = "KEY"
+	s["key"] = key
+	return s
 
 func _input(event):
 	if event is InputEventMouse:
