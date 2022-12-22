@@ -4,20 +4,30 @@ var function = null
 
 func set_name(name):
 	get_child(1).set_text(name)
+	resize()
 	return self
+	
+func get_name():
+	return get_child(1).get_text()
+	
 
 func set_function(new_function):
 	function = new_function
 	init()
 	return self
-
-func init():
+		
+func resize():
 	var text_node = get_child(1)
-
+	if function == null:
+		return
+		
 	var max_size_y = max(function.inputs.size(), function.outputs.size()) * 10 * 3
-	var max_size_x = text_node.get_size().x * 0.4
+	var max_size_x = text_node.get_minimum_size().x * 0.4
 	get_base().set_size(Vector2(max_size_x, max_size_y))
 	text_node.set_position(Vector2(0, max_size_y/2 - 16))
+
+func init():
+	resize()
 
 	var new_inputs = []
 	new_inputs.resize(function.inputs.size())

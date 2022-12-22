@@ -2,16 +2,11 @@ extends VBoxContainer
 
 var node_list = null;
 
-var circuit_scene = load("res://Circuits/FunctionCircuit.tscn")
-var ssd_scene = load("res://Circuits/SevenSegmentDisplay.tscn")
-var btn_scene = load("res://Circuits/Button.tscn")
-var key_scene = load("res://Circuits/Key.tscn")
-var clock_scene = load("res://Circuits/Clock.tscn")
-
-var CustomFunction = load("res://Functions/CustomFunction.gd")
-var NandFunction = load("res://Functions/NandFunction.gd")
-var FunctionInput = load("res://Functions/FunctionInput.gd")
-var FunctionOutput = load("res://Functions/FunctionOutput.gd")
+enum RightClickMenuButton {
+	EDIT = 0,
+	RENAME = 1,
+	DELETE = 2
+}
 
 func _ready():
 	node_list = get_node(NodePath("/root/Node2D/NodeList"))
@@ -36,66 +31,95 @@ func _process(_delta):
 	
 	
 func add_custom(name):
-	var btn = Button.new()
+	var btn = EventButton.new()
 	btn.text = name
-	btn.connect("pressed", self, "button_pressed", [btn])
+	btn.connect("left_pressed", self, "button_left_pressed", [btn])
+	btn.connect("right_pressed", self, "button_right_pressed", [btn])
 	btn.theme = load("World.tres")
 	add_child(btn)
 
-
-func button_pressed(btn):
-	if btn.text == "NAND":
-		var custom_function = CustomFunction.new()
-		custom_function.from_json(
-			to_json({
-				"name": "NAND",
-				"inputs": [
-					{"connections": [{"id": 0, "parent": 1}], "id": 0, "parent": 0},
-					{"connections": [{"id": 1, "parent": 1}], "id": 1, "parent": 0}
-				],
-				"outputs": [
-					{"connection": {"id": 0, "parent": 1},  "id": 0, "parent": 0}
-				],
-				"nodes": [
-					{
-						"function": "NAND",
-						"id": 1,
-						"inputs": [
-							{"connection": {"id": 0, "parent": 0}, "id": 0, "parent": 1},
-							{"connection": {"id": 1, "parent": 0}, "id": 1, "parent": 1}
-						],
-						"outputs": [
-							{"connections": [{"id": 0, "parent": 0}], "id": 0, "parent": 1}
-						]
-					}
-				]
-			})
-		)
-		var node = circuit_scene.instance()
-		node.set_name(custom_function.name).set_function(custom_function)
-		node_list.create(node)
-	elif btn.text == "SSD":
-		var seven_segment_display = ssd_scene.instance()
-		node_list.create(seven_segment_display)
-	elif btn.text == "BTN":
-		var button = btn_scene.instance()
-		node_list.create(button)
-	elif btn.text == "KEY":
-		var key = key_scene.instance()
-		node_list.create(key)
-	elif btn.text == "CLOCK":
-		var clock = clock_scene.instance()
-		node_list.create(clock)
-	else:
-		var file = File.new()
-		file.open("user://nodes/" + btn.text + ".save", File.READ)
-		var content = file.get_as_text()
-		file.close()
-
-		var custom_function = CustomFunction.new()
-		custom_function.from_json(content)
+func button_right_pressed(btn):
+	var popup = PopupMenu.new()
+	var mouse = get_viewport().get_mouse_position()
 	
-		var node = circuit_scene.instance()
-		node.set_name(custom_function.name).set_function(custom_function)
-		node_list.create(node)
-	pass
+	add_child(popup)
+	
+	popup.add_item("Edit", RightClickMenuButton.EDIT)
+	popup.add_item("Rename", RightClickMenuButton.RENAME)
+	popup.add_item("Delete", RightClickMenuButton.DELETE)
+	
+	popup.connect("popup_hide", self, "remove_child", [popup])
+	popup.connect("id_pressed", self, "menu_button_pressed", [btn])
+	
+	popup.popup_centered(Vector2(0, 0))
+	popup.rect_position = Vector2(mouse.x, mouse.y)
+
+func menu_button_pressed(action, btn):
+	match btn.text:
+		"NAND", "CLOCK", "BTN", "KEY", "SSD": return
+		
+	match action:
+		RightClickMenuButton.EDIT:
+			edit_node(btn)
+		RightClickMenuButton.RENAME:
+			rename_node(btn)
+		RightClickMenuButton.DELETE:
+			delete_node(btn)
+
+func edit_node(btn):
+	node_list.load_custom(btn.text)
+
+func rename_node(btn):
+	var popup = PopupPanel.new()
+	var mouse = get_viewport().get_mouse_position()
+	
+	add_child(popup)
+	
+	var text = LineEdit.new()
+	text.connect("text_entered", self, "text_entered", [popup, btn])
+	
+	popup.add_child(text)
+	popup.connect("popup_hide", self, "text_popup_closed", [popup, text, btn])
+	popup.popup_centered()
+	popup.rect_position = Vector2(mouse.x, mouse.y)
+
+func text_popup_closed(text, popup, btn):
+	if !get_children().has(popup):
+		return
+	remove_child(popup)
+	if text.text != "":
+		text_entered(text.text, popup, btn)
+
+func text_entered(text, popup, btn):
+	if !get_children().has(popup):
+		return
+	remove_child(popup)
+	
+	node_list.rename_nodes(btn.text, text)
+	
+	var file = File.new()
+	file.open("user://nodes/" + btn.text + ".save", File.READ)
+	var content = file.get_as_text()
+	file.close()
+	
+	var dir = Directory.new()
+	dir.open("user://nodes/")
+	dir.remove(btn.text + ".save")
+	
+	btn.text = text
+	
+	var json = JSON.parse(content).result
+	json.name = text
+	file.open("user://nodes/" + btn.text + ".save", File.WRITE)
+	file.store_line(to_json(json))
+	file.close()
+
+func delete_node(btn):
+	remove_child(btn)
+	var dir = Directory.new()
+	dir.open("user://nodes/")
+	dir.remove(btn.text + ".save")
+
+func button_left_pressed(btn):
+	var node = node_list.spawn_node(btn.text)
+	node_list.create(node)

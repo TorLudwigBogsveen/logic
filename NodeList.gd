@@ -10,8 +10,16 @@ var nodes = []
 
 var test_values = {}
 
-var input_node_scene = load("res://NodeParts/NodeInput.tscn")
-var output_node_scene = load("res://NodeParts/NodeOutput.tscn")
+var circuit_scene = load("res://Circuits/FunctionCircuit.tscn")
+var ssd_scene = load("res://Circuits/SevenSegmentDisplay.tscn")
+var btn_scene = load("res://Circuits/Button.tscn")
+var key_scene = load("res://Circuits/Key.tscn")
+var clock_scene = load("res://Circuits/Clock.tscn")
+
+var node_input_scene = load("res://NodeParts/NodeInput.tscn")
+var node_output_scene = load("res://NodeParts/NodeOutput.tscn")
+
+var FunctionCircuit = load("res://Circuits/FunctionCircuit.gd")
 
 var timer = 0
 var t = 0
@@ -52,23 +60,23 @@ func set_n_inputs(n_inputs):
 				remove_child(input)
 		inputs = []
 		for i in range(n_inputs):
-			var input_node_instance = output_node_scene.instance()
-			input_node_instance.id = i
-			add_child(input_node_instance)
-			inputs.push_back(input_node_instance)
+			var node_input_instance = node_output_scene.instance()
+			node_input_instance.id = i
+			add_child(node_input_instance)
+			inputs.push_back(node_input_instance)
 		reposition_inputs()
 	
-func set_n_outputs(n_outputs):
+func set_n_outputs(n_outputs):	
 	if n_outputs >= 0:
 		for output in outputs:
 			if get_children().has(output):
 				remove_child(output)
 		outputs = []
 		for i in range(n_outputs):
-			var output_node_instance = input_node_scene.instance()
-			output_node_instance.id = i
-			add_child(output_node_instance)
-			outputs.push_back(output_node_instance)
+			var node_output_instance = node_input_scene.instance()
+			node_output_instance.id = i
+			add_child(node_output_instance)
+			outputs.push_back(node_output_instance)
 		reposition_outputs()
 
 func reposition_outputs():
@@ -128,7 +136,114 @@ func delete():
 
 func id():
 	return 0
+
+func rename_nodes(old_name, new_name):
+	for node in nodes:
+		if node is FunctionCircuit:
+			if node.get_name() == old_name:
+				node.set_name(new_name)
+
+func load_custom(node_name):
+	var file = File.new()
+	var error = file.open("user://nodes/"+node_name+".save", File.READ)
+	if error:
+		push_error("ERORR OPENING FILE : " + String(error))
+	var content = file.get_as_text()
+	file.close()
 	
+	var json = JSON.parse(content)
+	if json.error != OK:
+		push_error("ERROR PARSING JSON")
+	
+	json = json.result
+	$"../Panel/NameField".text = json.name
+	$"../Panel/NInputsField".text = String(json.inputs.size())
+	$"../Panel/NOutputsField".text = String(json.outputs.size())
+	
+	set_n_inputs(json.inputs.size())
+	set_n_outputs(json.outputs.size())
+	
+	delete() #removes old nodes
+	
+	for node in json.nodes:
+		var new_node = spawn_node(node.function)
+		new_node.set_position(Vector2(node.position_x, node.position_y))
+		nodes.push_back(new_node)
+		add_child(new_node)
+		
+	
+	for node in json.nodes:
+		for input in node.inputs:
+			var this = nodes[input.parent-1]
+			if input.connection.parent == 0:
+				this.get_base().inputs[input.id].connected = outputs[input.connection.id]
+			else:
+				var other = nodes[input.connection.parent-1]
+				this.get_base().inputs[input.id].connected = other.get_base().outputs[input.connection.id]
+				
+	#for output in json.outputs:
+	#	node_output.inputs[output.id].connected = nodes[output.connection.parent-1].outputs[output.connection.id]
+
+func spawn_node(node_name):
+	match node_name:
+		"NAND":
+			var custom_function = CustomFunction.new()
+			custom_function.from_json(
+				to_json({
+					"name": "NAND",
+					"inputs": [
+						{"connections": [{"id": 0, "parent": 1}], "id": 0, "parent": 0},
+						{"connections": [{"id": 1, "parent": 1}], "id": 1, "parent": 0}
+					],
+					"outputs": [
+						{"connection": {"id": 0, "parent": 1},  "id": 0, "parent": 0}
+					],
+					"nodes": [
+						{
+							"function": "NAND",
+							"id": 1,
+							"inputs": [
+								{"connection": {"id": 0, "parent": 0}, "id": 0, "parent": 1},
+								{"connection": {"id": 1, "parent": 0}, "id": 1, "parent": 1}
+							],
+							"outputs": [
+								{"connections": [{"id": 0, "parent": 0}], "id": 0, "parent": 1}
+							]
+						}
+					]
+				})
+			)
+			var node = circuit_scene.instance()
+			node.set_name(custom_function.name).set_function(custom_function)
+			return node
+		"SSD":
+			var seven_segment_display = ssd_scene.instance()
+			return seven_segment_display
+		"BTN":
+			var button = btn_scene.instance()
+			return button
+		"KEY":
+			var key = key_scene.instance()
+			return key
+		"CLOCK":
+			var clock = clock_scene.instance()
+			return clock
+		_:
+			return load_node(node_name)
+
+func load_node(node_name):
+	var file = File.new()
+	file.open("user://nodes/" + node_name + ".save", File.READ)
+	var content = file.get_as_text()
+	file.close()
+
+	var custom_function = CustomFunction.new()
+	custom_function.from_json(content)
+
+	var node = circuit_scene.instance()
+	node.set_name(custom_function.name).set_function(custom_function)
+	return node
+
 func save_custom(node_name):
 	var dir = Directory.new()
 	dir.open("user://")

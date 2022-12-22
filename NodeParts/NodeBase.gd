@@ -1,7 +1,7 @@
 extends Node2D
 
-var input_node_scene = load("res://NodeParts/NodeInput.tscn")
-var output_node_scene = load("res://NodeParts/NodeOutput.tscn")
+var node_input_scene = load("res://NodeParts/NodeInput.tscn")
+var node_output_scene = load("res://NodeParts/NodeOutput.tscn")
 
 var inputs = []
 var outputs = []
@@ -24,9 +24,25 @@ func _input(event):
 				get_parent().select_node()
 			elif event.is_action_released("mouse_left"):
 				get_parent().unselect_node()
+				
+func reposition_outputs():
+	var window_size = get_viewport_rect().size;
+	for i in range(outputs.size()):
+		var output = outputs[i]
+		output.position.y = (get_size().y / (output_nodes.size() + 1))*(i+1)
+		output.position.x = get_size().x+10
 
+func reposition_inputs():
+	var window_size = get_viewport_rect().size;
+	for i in range(inputs.size()):
+		var input = inputs[i]
+		input.position.y = (get_size().y / (self.input_nodes.size() + 1))*(i+1)
+		input.position.x = -10
+		
 func set_size(size):
 	get_child(0).rect_size = size
+	reposition_inputs()
+	reposition_outputs()
 	
 func get_size():
 	return get_child(0).rect_size
@@ -53,15 +69,18 @@ func remove_outputs():
 func set_inputs(new_input_nodes):
 	remove_inputs()
 	
+	print(new_input_nodes)
+	
 	input_nodes = new_input_nodes
 	inputs = []
 	for i in input_nodes.size():
-		var input_node_instance = input_node_scene.instance()
-		input_node_instance.position.y = (get_size().y / (self.input_nodes.size() + 1))*(i+1)
-		input_node_instance.position.x = -10
+		var input_node_instance = node_input_scene.instance()
 		input_node_instance.id = i
 		add_child(input_node_instance)
 		inputs.push_back(input_node_instance)
+	
+	reposition_inputs()
+	
 	return self
 		
 func set_outputs(new_output_nodes):
@@ -70,9 +89,7 @@ func set_outputs(new_output_nodes):
 	output_nodes = new_output_nodes
 	outputs = []
 	for i in output_nodes.size():
-		var output_node_instance = output_node_scene.instance()
-		output_node_instance.position.y = (get_size().y / (output_nodes.size() + 1))*(i+1)
-		output_node_instance.position.x = get_size().x+10
+		var output_node_instance = node_output_scene.instance()
 		output_node_instance.id = i
 		add_child(output_node_instance)
 		outputs.push_back(output_node_instance)
@@ -80,6 +97,9 @@ func set_outputs(new_output_nodes):
 	values.fill(false)
 	old_values.resize(outputs.size())
 	old_values.fill(false)
+	
+	reposition_outputs()
+	
 	return self
 	
 func reset():
