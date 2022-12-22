@@ -29,12 +29,8 @@ func resize():
 func init():
 	resize()
 
-	var new_inputs = []
-	new_inputs.resize(function.inputs.size())
-	get_base().set_inputs(new_inputs)
-	var new_outputs = []
-	new_outputs.resize(function.outputs.size())
-	get_base().set_outputs(new_outputs)
+	get_base().set_n_inputs(function.inputs.size())
+	get_base().set_n_outputs(function.outputs.size())
 	
 func reset():
 	.reset()	

@@ -5,7 +5,7 @@ var tick_speed = 1
 var ticks: int = 0
 
 func _ready():
-	get_base().set_outputs([0])
+	get_base().set_n_outputs(1)
 
 func _input(event):
 	if event is InputEventMouseButton:

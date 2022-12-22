@@ -1,7 +1,7 @@
 extends "res://Circuits/CircuitBase.gd"
 
 func _ready():
-	get_base().set_inputs([0, 0, 0, 0, 0, 0, 0, 0])
+	get_base().set_n_inputs(8)
 	pass 
 	
 func run():
