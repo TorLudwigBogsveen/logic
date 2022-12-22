@@ -28,7 +28,7 @@ func _draw():
 		color = Color.red
 		
 	draw_circle(Vector2(0, 0), radius, color)
-	if connection != null:
+	if connection != null && curve.get_point_count() >= 2:
 		draw_polyline(curve.tessellate(10, 1), color, 5.0)
 		#draw_line(Vector2(0, 0), connection.global_position-global_position, color, 5.0)
 

@@ -13,7 +13,7 @@ func get_name():
 
 func set_function(new_function):
 	function = new_function
-	init()
+	#init() //This will init before node enters a scene which will cause errors
 	return self
 		
 func resize():
