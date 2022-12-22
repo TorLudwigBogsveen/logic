@@ -9,7 +9,7 @@ enum RightClickMenuButton {
 }
 
 func _ready():
-	node_list = get_node(NodePath("/root/Node2D/NodeList"))
+	node_list = get_node(NodePath("/root/World/NodeList"))
 	add_custom("NAND")
 	add_custom("SSD")
 	add_custom("BTN")
@@ -31,6 +31,10 @@ func _process(_delta):
 	
 	
 func add_custom(name):
+	for child in get_children():
+		if child.text == name:
+			return
+	
 	var btn = EventButton.new()
 	btn.text = name
 	btn.connect("left_pressed", self, "button_left_pressed", [btn])

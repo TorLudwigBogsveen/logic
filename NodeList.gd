@@ -160,6 +160,8 @@ func load_custom(node_name):
 	$"../Panel/NInputsField".text = String(json.inputs.size())
 	$"../Panel/NOutputsField".text = String(json.outputs.size())
 	
+	get_parent()._on_NameField_text_changed(json.name)
+	
 	set_n_inputs(json.inputs.size())
 	set_n_outputs(json.outputs.size())
 	
