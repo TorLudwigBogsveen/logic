@@ -179,16 +179,15 @@ func load_custom(node_name):
 			var this = nodes[input.parent-1]
 			if input.connection.parent == 0:
 				this.get_base().inputs[input.id].connect_node(inputs[input.connection.id])
-				#this.get_base().inputs[input.id].connected = outputs[input.connection.id]
 			else:
 				var other = nodes[input.connection.parent-1]
 				this.get_base().inputs[input.id].connect_node(other.get_base().outputs[input.connection.id])
-				#this.get_base().inputs[input.id].connected = other.get_base().outputs[input.connection.id]
 				
 	for output in json.outputs:
 		outputs[output.id].connect_node(nodes[output.connection.parent-1].get_base().outputs[output.connection.id])
 
 func spawn_node(node_name):
+	var node = null
 	match node_name:
 		"NAND":
 			var custom_function = CustomFunction.new()
@@ -217,23 +216,20 @@ func spawn_node(node_name):
 					]
 				})
 			)
-			var node = circuit_scene.instance()
+			node = circuit_scene.instance()
 			node.set_name(custom_function.name).set_function(custom_function)
-			return node
 		"SSD":
-			var seven_segment_display = ssd_scene.instance()
-			return seven_segment_display
+			node = ssd_scene.instance()
 		"BTN":
-			var button = btn_scene.instance()
-			return button
+			node = btn_scene.instance()
 		"KEY":
-			var key = key_scene.instance()
-			return key
+			node = key_scene.instance()
 		"CLOCK":
-			var clock = clock_scene.instance()
-			return clock
+			node = clock_scene.instance()
 		_:
-			return load_node(node_name)
+			node = load_node(node_name)
+	node.set_id(nodes.size()+1)
+	return node
 
 func load_node(node_name):
 	var file = File.new()
@@ -284,7 +280,6 @@ func save_custom(node_name):
 	
 func create(node):
 	selected_node = node
-	selected_node.set_id(nodes.size()+1)
 	nodes.push_back(selected_node)
 	add_child(selected_node)
 	pass
