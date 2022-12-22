@@ -176,13 +176,15 @@ func load_custom(node_name):
 		for input in node.inputs:
 			var this = nodes[input.parent-1]
 			if input.connection.parent == 0:
-				this.get_base().inputs[input.id].connected = outputs[input.connection.id]
+				this.get_base().inputs[input.id].connect_node(inputs[input.connection.id])
+				#this.get_base().inputs[input.id].connected = outputs[input.connection.id]
 			else:
 				var other = nodes[input.connection.parent-1]
-				this.get_base().inputs[input.id].connected = other.get_base().outputs[input.connection.id]
+				this.get_base().inputs[input.id].connect_node(other.get_base().outputs[input.connection.id])
+				#this.get_base().inputs[input.id].connected = other.get_base().outputs[input.connection.id]
 				
-	#for output in json.outputs:
-	#	node_output.inputs[output.id].connected = nodes[output.connection.parent-1].outputs[output.connection.id]
+	for output in json.outputs:
+		outputs[output.id].connect_node(nodes[output.connection.parent-1].get_base().outputs[output.connection.id])
 
 func spawn_node(node_name):
 	match node_name:
