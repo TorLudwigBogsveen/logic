@@ -15,6 +15,8 @@ func _ready():
 	add_custom("BTN")
 	add_custom("KEY")
 	add_custom("CLOCK")
+	add_custom("ROM")
+	add_custom("DMD")
 	
 	var dir = Directory.new()
 	if dir.open("user://nodes/") == OK:
@@ -60,7 +62,7 @@ func button_right_pressed(btn):
 
 func menu_button_pressed(action, btn):
 	match btn.text:
-		"NAND", "CLOCK", "BTN", "KEY", "SSD": return
+		"NAND", "CLOCK", "BTN", "KEY", "SSD", "ROM", "DMD": return
 		
 	match action:
 		RightClickMenuButton.EDIT:

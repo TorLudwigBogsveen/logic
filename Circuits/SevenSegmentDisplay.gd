@@ -5,13 +5,7 @@ func _ready():
 	pass 
 	
 func run():
-	var input_values = []
-	for i in range(get_base().inputs.size()):
-		var c = get_base().inputs[i].connection
-		if c != null:
-			input_values.push_back(c.get_value())
-		else:
-			input_values.push_back(false)
+	var input_values = get_base().get_input_values()
 			
 	for i in range(input_values.size()):
 		if input_values[i]:

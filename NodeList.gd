@@ -15,6 +15,8 @@ var ssd_scene = load("res://Circuits/SevenSegmentDisplay.tscn")
 var btn_scene = load("res://Circuits/Button.tscn")
 var key_scene = load("res://Circuits/Key.tscn")
 var clock_scene = load("res://Circuits/Clock.tscn")
+var rom_scene = load("res://Circuits/ROM.tscn")
+var dot_matrix_display_scene = load("res://Circuits/DotMatrixDisplay.tscn")
 
 var node_input_scene = load("res://NodeParts/NodeInput.tscn")
 var node_output_scene = load("res://NodeParts/NodeOutput.tscn")
@@ -25,7 +27,7 @@ var timer = 0
 var t = 0
 
 func _ready():
-	get_tree().get_root().connect("size_changed", self, "on_resized")
+	var _err = get_tree().get_root().connect("size_changed", self, "on_resized")
 
 func _draw():
 	if selected_io != null:
@@ -176,8 +178,6 @@ func load_custom(node_name):
 		new_node.set_position(Vector2(node.position_x, node.position_y))
 		
 		if node.has("key"):
-			print(node)
-			print(node.key)
 			new_node.set_key(node.key)
 		
 		nodes.push_back(new_node)
@@ -236,6 +236,10 @@ func spawn_node(node_name):
 			node = key_scene.instance()
 		"CLOCK":
 			node = clock_scene.instance()
+		"ROM":
+			node = rom_scene.instance()
+		"DMD":
+			node = dot_matrix_display_scene.instance()
 		_:
 			node = load_node(node_name)
 	node.set_id(nodes.size()+1)

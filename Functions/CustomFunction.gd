@@ -3,6 +3,7 @@ class_name CustomFunction
 var NandFunction = load("res://Functions/NandFunction.gd")
 var KeyFunction = load("res://Functions/KeyFunction.gd")
 var ClockFunction = load("res://Functions/ClockFunction.gd")
+var ROMFunction = load("res://Functions/ROMFunction.gd")
 
 var nodes = []
 
@@ -75,6 +76,13 @@ func load_nodes(json):
 			clock.set_outputs([output])
 			clock.tick_speed = node.tick_speed
 			nodes[node.id-1] = clock
+		elif node.function == "ROM":
+			var rom = ROMFunction.new()
+			var output = FunctionOutput.new()
+			output.parent = rom
+			rom.set_outputs([output])
+			rom.tick_speed = node.tick_speed
+			nodes[node.id-1] = rom
 		elif node.function == "SSD":
 			printerr("CUSTOM FUNCTION WITH SEVEN SEGMENT DISPLAY NOT IMPLEMENTED")
 		elif node.function == "BTN":

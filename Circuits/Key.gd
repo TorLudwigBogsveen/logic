@@ -12,8 +12,8 @@ func save():
 	s["key"] = key
 	return s
 
-func set_key(key):
-	self.key = key
+func set_key(new_key):
+	key = new_key
 	if key != null:
 		get_child(1).text = ""+char(key)
 	else:

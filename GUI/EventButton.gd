@@ -5,7 +5,7 @@ signal left_pressed
 signal right_pressed
 
 func _ready():
-	connect("gui_input", self, "_on_Button_gui_input")
+	var _err = connect("gui_input", self, "_on_Button_gui_input")
 
 func _on_Button_gui_input(event):
 	if event is InputEventMouseButton and !event.pressed:

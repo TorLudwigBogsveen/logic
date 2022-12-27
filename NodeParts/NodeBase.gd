@@ -29,6 +29,16 @@ func _input(event):
 			elif event.is_action_released("mouse_left"):
 				get_parent().unselect_node()
 
+func get_input_values():
+	var input_values = []
+	for i in range(inputs.size()):
+		var c = inputs[i].connection
+		if c != null:
+			input_values.push_back(c.get_value())
+		else:
+			input_values.push_back(false)
+	return input_values
+
 func disconnect_all():
 	for input in inputs:
 		input.disconnect_node()
@@ -52,8 +62,8 @@ func open_menu():
 	
 	pass				
 
-func menu_button_pressed(id):
-	match id:
+func menu_button_pressed(action):
+	match action:
 		RightClickMenuButton.DELETE:
 			get_parent().get_parent().remove_node(get_parent())
 		RightClickMenuButton.DISCONNECT:
@@ -61,14 +71,12 @@ func menu_button_pressed(id):
 	pass
 
 func reposition_outputs():
-	var window_size = get_viewport_rect().size;
 	for i in range(outputs.size()):
 		var output = outputs[i]
 		output.position.y = (get_size().y / (outputs.size() + 1))*(i+1)
 		output.position.x = get_size().x+10
 
 func reposition_inputs():
-	var window_size = get_viewport_rect().size;
 	for i in range(inputs.size()):
 		var input = inputs[i]
 		input.position.y = (get_size().y / (inputs.size() + 1))*(i+1)
