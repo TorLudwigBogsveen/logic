@@ -12,6 +12,13 @@ func save():
 	s["key"] = key
 	return s
 
+func set_key(key):
+	self.key = key
+	if key != null:
+		get_child(1).text = ""+char(key)
+	else:
+		get_child(1).text = "[KEY]"
+
 func _input(event):
 	if event is InputEventMouse:
 		var mouse_pos = get_viewport().get_mouse_position()
@@ -24,8 +31,7 @@ func _input(event):
 	elif event is InputEventKey:
 		if selected && event.pressed:
 			selected = false
-			key = event.scancode
-			get_child(1).text = ""+char(key)	
+			set_key(event.scancode)
 		elif event.pressed && event.scancode == key:
 			get_base().values = [true]
 		elif !event.pressed && event.scancode == key:

@@ -10,6 +10,11 @@ var id = -1
 var old_values = []
 var values = []
 
+enum RightClickMenuButton {
+	DELETE = 0,
+	DISCONNECT = 1
+}
+
 func _ready():
 	pass
 	
@@ -17,11 +22,44 @@ func _input(event):
 	if event is InputEventMouse:
 		var mouse_pos = get_viewport().get_mouse_position()
 		if is_mouse_inside(mouse_pos):
+			if event.is_action_pressed("mouse_right"):
+				open_menu()
 			if event.is_action_pressed("mouse_left"):
 				get_parent().select_node()
 			elif event.is_action_released("mouse_left"):
 				get_parent().unselect_node()
+
+func disconnect_all():
+	for input in inputs:
+		input.disconnect_node()
+	
+	for output in outputs:
+		output.disconnect_all()
 				
+func open_menu():
+	var popup = PopupMenu.new()
+	var mouse = get_viewport().get_mouse_position()
+	
+	add_child(popup)
+	popup.add_item("Delete", RightClickMenuButton.DELETE)
+	popup.add_item("Disconnect", RightClickMenuButton.DISCONNECT)
+	
+	popup.connect("popup_hide", self, "remove_child", [popup])
+	popup.connect("id_pressed", self, "menu_button_pressed")
+	
+	popup.popup_centered(Vector2(0, 0))
+	popup.rect_position = Vector2(mouse.x, mouse.y)
+	
+	pass				
+
+func menu_button_pressed(id):
+	match id:
+		RightClickMenuButton.DELETE:
+			get_parent().get_parent().remove_node(get_parent())
+		RightClickMenuButton.DISCONNECT:
+			disconnect_all()
+	pass
+
 func reposition_outputs():
 	var window_size = get_viewport_rect().size;
 	for i in range(outputs.size()):

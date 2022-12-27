@@ -46,7 +46,7 @@ func connect_node(other):
 	connection = other
 	other.connect_node(self)
 	
-func disconnect_node(other):
+func disconnect_node(other = connection):
 	if connection != null:
 		connection = null
 		other.disconnect_node(self)

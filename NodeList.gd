@@ -132,7 +132,11 @@ func delete():
 	set_n_inputs(inputs.size())
 	set_n_outputs(outputs.size())
 	test_values = {}
-	
+
+func remove_node(node):
+	node.get_base().disconnect_all()
+	nodes.remove(nodes.find(node))
+	node.queue_free()
 
 func id():
 	return 0
@@ -170,6 +174,12 @@ func load_custom(node_name):
 	for node in json.nodes:
 		var new_node = spawn_node(node.function)
 		new_node.set_position(Vector2(node.position_x, node.position_y))
+		
+		if node.has("key"):
+			print(node)
+			print(node.key)
+			new_node.set_key(node.key)
+		
 		nodes.push_back(new_node)
 		add_child(new_node)
 		
