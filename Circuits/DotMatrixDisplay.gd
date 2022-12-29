@@ -40,7 +40,7 @@ func _draw():
 	for y in range(int(size.y)):
 		for x in range(int(size.x)):
 			#draw_circle(Vector2(x*14+7+9, y*14+7+9), 7, data[x+y*size.x])
-			draw_rect(Rect2(x*16+7+2, y*16+7+2, 16, 16), data[x+y*size.x])
+			draw_rect(Rect2(x*16+8, y*16+8, 16, 16), data[x+y*size.x])
 	pass
 
 func open_menu(popup):
