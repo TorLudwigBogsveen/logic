@@ -35,13 +35,13 @@ func save():
 	s["function"] = "ROM"
 	s["path"] = path
 	return s
+	
+func open_menu(popup):
+	popup.add_item("Choose file", 2)
 
-func _input(event):
-	if event is InputEventMouse:
-		var mouse_pos = get_viewport().get_mouse_position()
-		if is_mouse_inside(mouse_pos):
-			if event.is_action_pressed("mouse_right"):
-				file_menu()
+func menu_button_pressed(action):
+	if action == 2:
+		file_menu()
 
 func file_menu():
 	var popup = FileDialog.new()

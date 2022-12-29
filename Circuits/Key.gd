@@ -19,16 +19,16 @@ func set_key(new_key):
 	else:
 		get_child(1).text = "[KEY]"
 
+func open_menu(popup):
+	popup.add_item("Choose Key", 2)
+
+func menu_button_pressed(action):
+	if action == 2:
+		selected = true
+
+
 func _input(event):
-	if event is InputEventMouse:
-		var mouse_pos = get_viewport().get_mouse_position()
-		if is_mouse_inside(mouse_pos):
-			if event.is_action_pressed("mouse_right"):
-				selected = true
-		else:
-			if event.is_action_pressed("mouse_right"):
-				selected = false
-	elif event is InputEventKey:
+	if event is InputEventKey:
 		if selected && event.pressed:
 			selected = false
 			set_key(event.scancode)

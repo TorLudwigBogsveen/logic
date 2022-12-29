@@ -44,7 +44,7 @@ func _process(delta):
 		timer -= 1.0
 		print("TICK: " + String(t))
 		t = 0
-	for _i in range(1):
+	for _i in range(20):
 		for node in nodes:
 			node.run()
 		for node in nodes:

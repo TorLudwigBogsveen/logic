@@ -54,6 +54,8 @@ func open_menu():
 	popup.add_item("Delete", RightClickMenuButton.DELETE)
 	popup.add_item("Disconnect", RightClickMenuButton.DISCONNECT)
 	
+	get_parent().open_menu(popup)
+	
 	popup.connect("popup_hide", self, "remove_child", [popup])
 	popup.connect("id_pressed", self, "menu_button_pressed")
 	
@@ -68,6 +70,8 @@ func menu_button_pressed(action):
 			get_parent().get_parent().remove_node(get_parent())
 		RightClickMenuButton.DISCONNECT:
 			disconnect_all()
+		_:
+			get_parent().menu_button_pressed(action)
 	pass
 
 func reposition_outputs():

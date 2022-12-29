@@ -5,14 +5,14 @@ var on = false;
 func _ready():
 	get_base().set_n_outputs(1)
 
-func _input(event):
-	if event is InputEventMouse:
-		var mouse_pos = get_viewport().get_mouse_position()
-		if is_mouse_inside(mouse_pos):
-			if event.is_action_pressed("mouse_right"):
-				on = !on
-				get_base().values = [on]
-				if on:
-					get_child(1).text = "ON"
-				else:
-					get_child(1).text = "OFF"
+func open_menu(popup):
+	popup.add_item("Flip ON/OFF", 2)
+
+func menu_button_pressed(action):
+	if action == 2:
+		on = !on
+		get_base().values = [on]
+		if on:
+			get_child(1).text = "ON"
+		else:
+			get_child(1).text = "OFF"

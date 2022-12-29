@@ -25,6 +25,12 @@ func clicked_input(input, btn):
 func clicked_output(output, btn):
 	get_parent().clicked_output(output, btn)
 	
+func open_menu(popup):
+	pass
+
+func menu_button_pressed(action):
+	pass
+	
 func reset():
 	base.reset()
 
