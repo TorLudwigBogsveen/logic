@@ -17,17 +17,6 @@ enum RightClickMenuButton {
 
 func _ready():
 	pass
-	
-func _input(event):
-	if event is InputEventMouse:
-		var mouse_pos = get_viewport().get_mouse_position()
-		if is_mouse_inside(mouse_pos):
-			if event.is_action_pressed("mouse_right"):
-				open_menu()
-			if event.is_action_pressed("mouse_left"):
-				get_parent().select_node()
-			elif event.is_action_released("mouse_left"):
-				get_parent().unselect_node()
 
 func get_input_values():
 	var input_values = []
@@ -176,3 +165,14 @@ func save():
 	}
 	
 	return save_dict
+
+func _on_Panel_gui_input(event):
+	if event is InputEventMouse:
+		var mouse_pos = get_viewport().get_mouse_position()
+		if is_mouse_inside(mouse_pos):
+			if event.is_action_pressed("mouse_right"):
+				open_menu()
+			if event.is_action_pressed("mouse_left"):
+				get_parent().select_node()
+			elif event.is_action_released("mouse_left"):
+				get_parent().unselect_node()
