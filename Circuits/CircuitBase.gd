@@ -28,10 +28,10 @@ func clicked_input(input, btn):
 func clicked_output(output, btn):
 	get_parent().clicked_output(output, btn)
 	
-func open_menu(popup):
+func open_menu(_popup):
 	pass
 
-func menu_button_pressed(action):
+func menu_button_pressed(_action):
 	pass
 	
 func reset():
