@@ -31,14 +31,17 @@ func open_speed_selection_menu():
 	
 	popup.add_child(input)
 
-func text_entered(text):
-	tick_speed = int(text)
+func set_tick_speed(speed):
+	tick_speed = speed
 	tick_speed = max(1, tick_speed)
 	get_child(2).text = String(tick_speed)
 
+func text_entered(text):
+	set_tick_speed(int(text))
+
 func save():
 	var s = .save()
-	s["function"] = "CLK"
+	s["function"] = "CLOCK"
 	s["tick_speed"] = tick_speed
 	return s
 	

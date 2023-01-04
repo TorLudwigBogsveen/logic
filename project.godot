@@ -63,6 +63,11 @@ _global_script_classes=[ {
 "class": "NodeOutput",
 "language": "GDScript",
 "path": "res://NodeParts/NodeOutput.gd"
+}, {
+"base": "Reference",
+"class": "ROMFunction",
+"language": "GDScript",
+"path": "res://Functions/ROMFunction.gd"
 } ]
 _global_script_class_icons={
 "ClockFunction": "",
@@ -75,7 +80,8 @@ _global_script_class_icons={
 "KeyFunction": "",
 "NandFunction": "",
 "NodeInput": "",
-"NodeOutput": ""
+"NodeOutput": "",
+"ROMFunction": ""
 }
 
 [application]

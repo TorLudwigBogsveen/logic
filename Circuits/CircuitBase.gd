@@ -13,6 +13,9 @@ func get_base():
 func set_id(id):
 	get_base().id = id
 
+func get_id():
+	return get_base().id
+
 func select_node():
 	get_parent().selected_node = self
 

@@ -39,9 +39,10 @@ func disconnect_node(other):
 		connections.erase(other)
 
 func disconnect_all():
-	for c in connections:
+	var cs = connections;
+	connections = []
+	for c in cs:
 		c.disconnect_node(self)
-		connections.erase(c)
 
 func get_value():
 	if get_parent() != null:

@@ -8,7 +8,7 @@ enum DisplayType {
 	GOLD
 }
 
-var type = DisplayType.WHITE_BLACK
+var type = DisplayType.GOLD
 var data = null
 var new_data = null
 var index = 0

@@ -137,7 +137,10 @@ func delete():
 
 func remove_node(node):
 	node.get_base().disconnect_all()
-	nodes.remove(nodes.find(node))
+	var id = nodes.find(node)
+	nodes[id] = nodes.back()
+	nodes[id].set_id(node.get_id())
+	nodes.pop_back()
 	node.queue_free()
 
 func id():
@@ -179,6 +182,10 @@ func load_custom(node_name):
 		
 		if node.has("key"):
 			new_node.set_key(node.key)
+		if node.has("path"):
+			new_node.file_selected(node.path)
+		if node.has("tick_speed"):
+			new_node.set_tick_speed(node.tick_speed)
 		
 		nodes.push_back(new_node)
 		add_child(new_node)

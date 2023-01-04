@@ -63,13 +63,12 @@ func load_nodes(json):
 			nodes[node.id-1] = nand
 		elif node.function == "KEY":
 			var key = KeyFunction.new()
-			key.set_inputs([FunctionInput.new(), FunctionInput.new()])
 			var output = FunctionOutput.new()
 			output.parent = key
 			key.set_outputs([output])
 			key.key = node.key
 			nodes[node.id-1] = key
-		elif node.function == "CLK":
+		elif node.function == "CLOCK":
 			var clock = ClockFunction.new()
 			var output = FunctionOutput.new()
 			output.parent = clock
@@ -80,8 +79,9 @@ func load_nodes(json):
 			var rom = ROMFunction.new()
 			var output = FunctionOutput.new()
 			output.parent = rom
+			rom.set_inputs([FunctionInput.new()])
 			rom.set_outputs([output])
-			rom.tick_speed = node.tick_speed
+			rom.file_selected(node.path)
 			nodes[node.id-1] = rom
 		elif node.function == "SSD":
 			printerr("CUSTOM FUNCTION WITH SEVEN SEGMENT DISPLAY NOT IMPLEMENTED")
