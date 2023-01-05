@@ -17,6 +17,8 @@ func get_id():
 	return get_base().id
 
 func select_node():
+	var mouse_pos = get_viewport().get_mouse_position()
+	get_parent().selected_node_offset = mouse_pos - get_base().global_position
 	get_parent().selected_node = self
 
 func unselect_node():

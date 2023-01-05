@@ -29,7 +29,7 @@ func _draw():
 		
 	draw_circle(Vector2(0, 0), radius, color)
 	if connection != null && curve.get_point_count() >= 2:
-		draw_polyline(curve.tessellate(10, 1), color, 5.0)
+		draw_polyline(curve.tessellate(5, 1), color, 5.0, true)
 		#draw_line(Vector2(0, 0), connection.global_position-global_position, color, 5.0)
 
 func _input(event):

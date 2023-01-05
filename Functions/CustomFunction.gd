@@ -4,6 +4,7 @@ var NandFunction = load("res://Functions/NandFunction.gd")
 var KeyFunction = load("res://Functions/KeyFunction.gd")
 var ClockFunction = load("res://Functions/ClockFunction.gd")
 var ROMFunction = load("res://Functions/ROMFunction.gd")
+var ButtonFunction = load("res://Functions/ButtonFunction.gd")
 
 var nodes = []
 
@@ -86,7 +87,12 @@ func load_nodes(json):
 		elif node.function == "SSD":
 			printerr("CUSTOM FUNCTION WITH SEVEN SEGMENT DISPLAY NOT IMPLEMENTED")
 		elif node.function == "BTN":
-			printerr("CUSTOM FUNCTION WITH BUTTON NOT IMPLEMENTED")
+			var button = ButtonFunction.new()
+			var output = FunctionOutput.new()
+			output.parent = button
+			button.set_outputs([output])
+			button.on = bool(node.on)
+			nodes[node.id-1] = button
 		else:
 			var file = File.new()
 			file.open("user://nodes/" + node.function + ".save", File.READ)

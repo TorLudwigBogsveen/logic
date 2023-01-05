@@ -16,3 +16,9 @@ func menu_button_pressed(action):
 			get_child(1).text = "ON"
 		else:
 			get_child(1).text = "OFF"
+			
+func save():
+	var s = .save()
+	s["function"] = "BTN"
+	s["on"] = on
+	return s

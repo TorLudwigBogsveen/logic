@@ -2,6 +2,7 @@ extends Node2D
 
 var selected_node = null
 var selected_io = null
+var selected_node_offset = Vector2(0, 0)
 
 var inputs = []
 var outputs = []
@@ -24,7 +25,9 @@ var node_output_scene = load("res://NodeParts/NodeOutput.tscn")
 var FunctionCircuit = load("res://Circuits/FunctionCircuit.gd")
 
 var timer = 0
+var timer_2 = 0
 var t = 0
+var frames = 0
 
 func _ready():
 	var _err = get_tree().get_root().connect("size_changed", self, "on_resized")
@@ -39,20 +42,24 @@ func on_resized():
 		
 func _process(delta):
 	timer += delta
+	timer_2 += delta
 	t += 1
 	if timer >= 1.0:
 		timer -= 1.0
-		print("TICK: " + String(t))
+		OS.set_window_title("TICK: " + String(t) + " FRAMES: " + String(frames))
 		t = 0
-	for _i in range(20):
+	#for _i in range(1):
+	var speed = 20
+	while timer_2 > 1.0 / speed:
+		timer_2 -= 1.0 / speed
+		frames += 1
 		for node in nodes:
 			node.run()
 		for node in nodes:
 			node.reset()
 	if selected_node != null:
 		var pos = get_viewport().get_mouse_position()
-		var size = selected_node.get_base().get_size()
-		selected_node.set_position(Vector2(pos.x-size.x/2, pos.y-size.y/2))
+		selected_node.set_position(Vector2(pos.x-selected_node_offset.x, pos.y-selected_node_offset.y))
 	update()
 
 func set_n_inputs(n_inputs):
@@ -142,6 +149,9 @@ func remove_node(node):
 	nodes[id].set_id(node.get_id())
 	nodes.pop_back()
 	node.queue_free()
+	selected_io = null
+	selected_node = null
+		
 
 func id():
 	return 0
@@ -301,6 +311,12 @@ func save_custom(node_name):
 	
 func create(node):
 	selected_node = node
+	if selected_node is FunctionCircuit:
+		selected_node.resize()
+		
+	var size = selected_node.get_base().get_size()
+	selected_node_offset = Vector2(size.x / 2, size.y / 2)
+	
 	nodes.push_back(selected_node)
 	add_child(selected_node)
 	pass

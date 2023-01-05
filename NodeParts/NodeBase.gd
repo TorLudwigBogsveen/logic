@@ -85,9 +85,9 @@ func get_size():
 
 func get_value(io):
 	if io is NodeOutput:
-		return old_values[outputs.find(io)]
+		return values[outputs.find(io)]
 	elif io is NodeInput:
-		return old_values[inputs.find(io)]
+		return values[inputs.find(io)]
 	else:
 		assert(false)
 
