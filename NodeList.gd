@@ -23,6 +23,7 @@ var node_input_scene = load("res://NodeParts/NodeInput.tscn")
 var node_output_scene = load("res://NodeParts/NodeOutput.tscn")
 
 var FunctionCircuit = load("res://Circuits/FunctionCircuit.gd")
+var RustCustomFunction = load("res://rust_custom_function.gdns")
 
 var timer = 0
 var timer_2 = 0
@@ -217,7 +218,8 @@ func spawn_node(node_name):
 	var node = null
 	match node_name:
 		"NAND":
-			var custom_function = CustomFunction.new()
+			#var custom_function = CustomFunction.new()
+			var custom_function = RustCustomFunction.new()
 			custom_function.from_json(
 				to_json({
 					"name": "NAND",
@@ -243,6 +245,7 @@ func spawn_node(node_name):
 					]
 				})
 			)
+	
 			node = circuit_scene.instance()
 			node.set_name(custom_function.name).set_function(custom_function)
 		"SSD":
@@ -268,7 +271,8 @@ func load_node(node_name):
 	var content = file.get_as_text()
 	file.close()
 
-	var custom_function = CustomFunction.new()
+	var custom_function = RustCustomFunction.new()
+	#var custom_function = CustomFunction.new()
 	custom_function.from_json(content)
 
 	var node = circuit_scene.instance()
@@ -303,8 +307,6 @@ func save_custom(node_name):
 		"outputs": node_outputs,
 		"nodes": nodes_saved
 	}
-	
-	print(to_json(save_dict))
 	
 	save_game.store_line(to_json(save_dict))
 	save_game.close()

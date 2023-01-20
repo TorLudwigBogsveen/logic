@@ -21,7 +21,7 @@ func resize():
 	if function == null:
 		return
 		
-	var max_size_y = max(function.inputs.size(), function.outputs.size()) * 10 * 3
+	var max_size_y = max(max(function.n_inputs(), function.n_outputs()) * 10 * 3, text_node.get_minimum_size().y)
 	var max_size_x = text_node.get_minimum_size().x * 0.4
 	get_base().set_size(Vector2(max_size_x, max_size_y))
 	text_node.set_position(Vector2(0, max_size_y/2 - 16))
@@ -29,8 +29,8 @@ func resize():
 func init():
 	resize()
 
-	get_base().set_n_inputs(function.inputs.size())
-	get_base().set_n_outputs(function.outputs.size())
+	get_base().set_n_inputs(function.n_inputs())
+	get_base().set_n_outputs(function.n_outputs())
 	
 func reset():
 	.reset()	
@@ -50,7 +50,7 @@ func run():
 		else:
 			input_values.push_back(false)
 	self.function.input_values = input_values
-	self.function.run()
+	self.function.run()	
 	var output_values = self.function.get_output_values()
 	get_base().values = output_values
 	

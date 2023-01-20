@@ -104,7 +104,7 @@ func remove_outputs():
 
 func set_n_inputs(n_inputs):
 	remove_inputs()
-	
+
 	inputs = []
 	for i in range(n_inputs):
 			var node_input_instance = node_input_scene.instance()
